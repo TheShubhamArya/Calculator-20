@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calculator" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bse-ep-3ya">
-                                <rect key="frame" x="152" y="363" width="110" height="30"/>
+                                <rect key="frame" x="152" y="283" width="110" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -32,7 +32,7 @@
                         <constraints>
                             <constraint firstItem="wY5-O0-jo6" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4ti-yQ-Gv8"/>
                             <constraint firstItem="Bse-ep-3ya" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="9IZ-Wn-VkZ"/>
-                            <constraint firstItem="Bse-ep-3ya" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-70" id="MgO-dP-evd"/>
+                            <constraint firstItem="Bse-ep-3ya" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-150" id="MgO-dP-evd"/>
                             <constraint firstItem="wY5-O0-jo6" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="160" id="lIa-LP-zAO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
