@@ -138,32 +138,70 @@ class ViewController: UIViewController {
         }
     }
     
+    func fixPrecision(n1d:Double,n2d:Double,toPlace:Int64)->Double{
+        var n1 = n1d
+        var n2 = n2d
+        let numPrecisionDecimal = Double(toPlace)
+        let x : Double = pow(10.0 , numPrecisionDecimal)
+        var result : Int64
+        n1 = n1 * Double(x)
+        n1 = round(n1)
+        n2 = n2 * Double(x)
+        n2 = round(n2)
+        if Operater == "+" {
+            result = add(n1: Int64(n1), n2: Int64(n2))
+            return Double(result)/x
+        } else if Operater == "-" {
+            result = subtract(n1: Int64(n1), n2: Int64(n2))
+            return Double(result)/x
+        } else if Operater == "x"{
+            result = multiply(n1: Int64(n1), n2: Int64(n2))
+            return Double(result)/(x*x)
+        } else if Operater == "÷"{
+            return divide(n1: Int64(n1), n2: Int64(n2))
+        } else if Operater == "mod"{
+            var resultDecimal = n1.remainder(dividingBy: n2)
+            if resultDecimal < 0{
+                resultDecimal = resultDecimal + n2
+            }
+            return resultDecimal/x
+        }
+        return 0
+    }
+    func add (n1: Int64, n2:Int64)->Int64{
+        return n1 + n2
+    }
+    func subtract(n1: Int64, n2:Int64)->Int64{
+        return n1 - n2
+    }
+    func multiply(n1: Int64, n2:Int64)->Int64{
+        return n1*n2
+    }
+    func divide(n1: Int64, n2:Int64)->Double{
+        return Double(n1)/Double(n2)
+    }
      //This function performs all the binary finctions in the caculator
     func operationFunction(Num1: String="",Operator: String=" ",Num2: String="")->(String){
-        let numberOne = Int64(num1) ?? 0 //numberOne is the integer version of num1 which is String
-        let numberTwo = Int64(num2) ?? 0 //numberTwo is the integer version of num2 which is String
-        var numberOneDecimal = Double(num1) ?? 0.0 //numberOneDecimal is the integer version of num1 which is String
-        var numberTwoDecimal = Double(num2) ?? 0.0 //numberTwoDecimal is the integer version of num2 which is String
-        var num1Count : UInt64 = UInt64(num1.count) //num1Count is the number of characters in num1
-        var num2Count : UInt64 = UInt64(num2.count) //num2Count is the number of characters in num2
+        let numberOne = Int64(num1) ?? 0
+        let numberTwo = Int64(num2) ?? 0
+        var numberOneDecimal = Double(num1) ?? 0.0
+        let numberTwoDecimal = Double(num2) ?? 0.0
+        var num1Count : UInt64 = 0
+        var num2Count : UInt64 = 0
         /*
          The next 4 if-statements are present to reduce the number of character counts
          for unnecessary characters like a 0 or a '.' So if the num1 is 0.0555
          num1Count will be equal to 4. If num2 is 10.112, then num2Count is 5
          */
-        if num1.first == "0"{
-            num1Count = num1Count-1
+        for a in num1 {
+            if a == "."{
+                num1Count += 1
+            }
         }
-        if num1.contains(".")
-        {
-            num1Count = num1Count-1
-        }
-        if num2.first == "0"{
-            num2Count = num2Count-1
-        }
-        if num2.contains(".")
-        {
-            num2Count = num2Count-1
+        for a in num2 {
+            if a == "."{
+                num2Count += 1
+            }
         }
         var toPlaces = Int64(0) //stores the number of places to move in a Doubleing point
         var result = Int64(0) // stores the result of the 2 operands in integer
@@ -183,47 +221,31 @@ class ViewController: UIViewController {
             // need to output it in scientific form but store it in num1 in actual way
         }
         */
+        toPlaces = Int64(max(num1Count,num2Count))
         switch Operator {
         case "+":
              if decimalFlagNum1 || decimalFlagNum2{
-                resultDecimal = numberOneDecimal + numberTwoDecimal
+                resultDecimal = fixPrecision(n1d: numberOneDecimal,n2d: numberTwoDecimal,toPlace: toPlaces)
                 num1 = String(resultDecimal)
             }else{
-                result = numberOne + numberTwo
+                result = add(n1: numberOne, n2: numberOne)
                 num1 = String(result)
             }
         case "-":
-            toPlaces = Int64(max(num1Count,num2Count))
             if decimalFlagNum1 || decimalFlagNum2{
-                let numPrecisionDecimal = Double(toPlaces)
-                let x : Double = pow(10.0 , numPrecisionDecimal)
-                numberOneDecimal = numberOneDecimal * Double(x)
-                numberOneDecimal = round(numberOneDecimal)
-                numberTwoDecimal = numberTwoDecimal * Double(x)
-                numberTwoDecimal = round(numberTwoDecimal)
-                resultDecimal = Double(numberOneDecimal) - Double(numberTwoDecimal)
-                resultDecimal = resultDecimal/x
+                resultDecimal = fixPrecision(n1d: numberOneDecimal,n2d: numberTwoDecimal,toPlace: toPlaces)
                 num1 = String(resultDecimal)
             }else{
-                result = numberOne - numberTwo
+                result = subtract(n1: numberOne,n2: numberTwo)
                 num1 = String(result)
             }
         case "x":
             toPlaces = Int64(num1Count + num2Count)
             if decimalFlagNum1 || decimalFlagNum2{
-                let numPrecisionDecimal = Double(toPlaces)
-                let x = pow(10.0 , numPrecisionDecimal)
-                let x1 = pow(10.0,Double(num1Count))
-                let x2 = pow(10.0,Double(num2Count))
-                numberOneDecimal = numberOneDecimal * Double(x1)
-                numberOneDecimal = round(numberOneDecimal)
-                numberTwoDecimal = numberTwoDecimal * Double(x2)
-                numberTwoDecimal = round(numberTwoDecimal)
-                resultDecimal = Double(numberOneDecimal) * Double(numberTwoDecimal)
-                resultDecimal=resultDecimal/x
+                resultDecimal = fixPrecision(n1d: numberOneDecimal,n2d: numberTwoDecimal,toPlace: toPlaces)
                 num1 = String(resultDecimal)
             }else{
-                result = numberOne * numberTwo
+                result = multiply(n1: numberOne,n2: numberTwo)
                 num1 = String(result)
             }
         case "^":
@@ -259,31 +281,16 @@ class ViewController: UIViewController {
                 }
             }
         case "÷":
-            toPlaces = Int64(max(num1Count,num2Count))
             if decimalFlagNum1 || decimalFlagNum2{
-                let num1PrecisionDecimal = Double(toPlaces)
-                let x1 = pow(10.0 , num1PrecisionDecimal)
-                numberOneDecimal = numberOneDecimal * Double(x1)
-                numberTwoDecimal = numberTwoDecimal * Double(x1)
-                resultDecimal = numberOneDecimal / numberTwoDecimal
+                resultDecimal = fixPrecision(n1d: numberOneDecimal,n2d: numberTwoDecimal,toPlace: toPlaces)
                 num1 = String(resultDecimal)
             }else{
-                resultDecimal = Double(numberOne)/Double(numberTwo)
+                resultDecimal = divide(n1 :numberOne,n2: numberTwo)
                 num1 = String(resultDecimal)
             }
         case "mod":
-            toPlaces = Int64(max(num1Count,num2Count))
             if decimalFlagNum1 || decimalFlagNum2{
-                let num1PrecisionDecimal = Double(toPlaces)
-                let x = pow(10.0 , num1PrecisionDecimal)
-                numberOneDecimal = numberOneDecimal * Double(x)
-                numberTwoDecimal = numberTwoDecimal * Double(x)
-                
-                resultDecimal = numberOneDecimal.remainder(dividingBy: numberTwoDecimal)
-                if resultDecimal < 0{
-                    resultDecimal = resultDecimal + numberTwoDecimal
-                }
-                resultDecimal = resultDecimal/x
+                resultDecimal = fixPrecision(n1d: numberOneDecimal,n2d: numberTwoDecimal,toPlace: toPlaces)
                 num1 = String(resultDecimal)
             }else{
                 if numberOne < numberTwo{
